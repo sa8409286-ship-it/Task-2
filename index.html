@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Awards Submission</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: Inter, Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+    }
+
+    .page {
+      width: min(1180px, 100%);
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 22px 60px rgba(22, 34, 58, .14);
+      display: grid;
+      grid-template-columns: 38% 62%;
+      min-height: 760px;
+    }
+
+    .intro {
+      position: relative;
+      padding: 68px 54px;
+      color: #fff;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.12), transparent 32%),
+        linear-gradient(145deg, #142b52 0%, #0b1b36 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .intro::after {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      right: -90px;
+      bottom: -90px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.06);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      padding: 7px 12px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-size: clamp(42px, 5vw, 64px);
+      line-height: .98;
+      letter-spacing: -.045em;
+      margin-bottom: 22px;
+    }
+
+    .intro p {
+      color: rgba(255,255,255,.78);
+      line-height: 1.75;
+      font-size: 15px;
+      max-width: 360px;
+    }
+
+    .deadline {
+      margin-top: 34px;
+      padding-top: 25px;
+      border-top: 1px solid rgba(255,255,255,.18);
+    }
+
+    .deadline span {
+      display: block;
+      color: rgba(255,255,255,.58);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 8px;
+    }
+
+    .deadline strong {
+      font-size: 18px;
+    }
+
+    .form-area {
+      padding: 48px 54px;
+      background: #fff;
+      overflow-y: auto;
+    }
+
+    .form-header {
+      margin-bottom: 30px;
+    }
+
+    .form-header h2 {
+      font-size: 28px;
+      letter-spacing: -.025em;
+      margin-bottom: 7px;
+    }
+
+    .form-header p {
+      color: #697386;
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #3d4657;
+      letter-spacing: .02em;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid #dfe4ec;
+      background: #fafbfc;
+      color: #172033;
+      border-radius: 11px;
+      padding: 13px 14px;
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: .2s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #315fa8;
+      box-shadow: 0 0 0 3px rgba(49,95,168,.10);
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 94px;
+      resize: vertical;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 15px;
+    }
+
+    .section-title h3 { font-size: 18px; }
+    .section-title p { color: #7b8494; font-size: 12px; }
+
+    .awards {
+      display: grid;
+      gap: 12px;
+    }
+
+    .award {
+      border: 1px solid #e4e8ef;
+      border-radius: 14px;
+      padding: 15px;
+      transition: .2s ease;
+      background: #fff;
+    }
+
+    .award.selected {
+      border-color: #315fa8;
+      background: #f7faff;
+    }
+
+    .award-top {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 11px;
+    }
+
+    .award-top label {
+      cursor: pointer;
+      font-size: 13px;
+      color: #252d3b;
+    }
+
+    input[type="checkbox"] {
+      width: 17px;
+      height: 17px;
+      accent-color: #315fa8;
+      cursor: pointer;
+    }
+
+    .award textarea {
+      display: none;
+      min-height: 78px;
+      background: #fff;
+    }
+
+    .award.selected textarea { display: block; }
+
+    .actions {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 11px;
+      padding: 14px 24px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      background: #142b52;
+      color: #fff;
+      transition: .2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); background: #0e2345; }
+    button:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+
+    .note { font-size: 12px; color: #7b8494; }
+
+    .success {
+      display: none;
+      margin-top: 18px;
+      padding: 13px 15px;
+      border-radius: 11px;
+      background: #ecfdf3;
+      color: #17663c;
+      border: 1px solid #bde8cf;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .success.show { display: block; }
+
+    @media (max-width: 900px) {
+      body { padding: 14px; }
+      .page { grid-template-columns: 1fr; }
+      .intro { padding: 42px 34px; min-height: 330px; }
+      .form-area { padding: 38px 30px; }
+    }
+
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .intro { padding: 36px 25px; }
+      .form-area { padding: 30px 20px; }
+      h1 { font-size: 44px; }
+      .section-title { align-items: flex-start; flex-direction: column; gap: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="intro">
+      <div class="eyebrow">Awards Program</div>
+      <h1>Submission</h1>
+      <p>
+        Submit your project or campaign for consideration. All information
+        provided will be treated confidentially and used only for the award review process.
+      </p>
+      <div class="deadline">
+        <span>Application deadline</span>
+        <strong>15 December 2026</strong>
+      </div>
+    </section>
+
+    <section class="form-area">
+      <div class="form-header">
+        <h2>Nomination Details</h2>
+        <p>Please complete the information below and select the award categories you wish to enter.</p>
+      </div>
+
+      <form id="submissionForm">
+        <div class="grid">
+          <div class="field">
+            <label for="name">Full Name *</label>
+            <input id="name" name="name" type="text" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="field">
+            <label for="email">Email Address *</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required>
+          </div>
+
+          <div class="field full">
+            <label for="organisation">Organisation *</label>
+            <input id="organisation" name="organisation" type="text" placeholder="Enter organisation name" required>
+          </div>
+        </div>
+
+        <div class="section-title">
+          <div>
+            <h3>Which Award?</h3>
+            <p>Select one or more categories and add a short description.</p>
+          </div>
+        </div>
+
+        <div class="awards">
+          <div class="award">
+            <div class="award-top">
+              <input id="live" type="checkbox" name="award" value="Best Livestream">
+              <label for="live">Best Livestream</label>
+            </div>
+            <textarea name="description_live" maxlength="150" placeholder="Description & results (max. 150 words)"></textarea>
+          </div>
+
+          <div class="award">
+            <div class="award-top">
+              <input id="tour" type="checkbox" name="award" value="Best Tour Campaign">
+              <label for="tour">Best Tour Campaign</label>
+            </div>
+            <textarea name="description_tour" maxlength="150" placeholder="Description & results (max. 150 words)"></textarea>
+          </div>
+
+          <div class="award">
+            <div class="award-top">
+              <input id="sponsor" type="checkbox" name="award" value="Best Sponsor Activation">
+              <label for="sponsor">Best Sponsor Activation</label>
+            </div>
+            <textarea name="description_sponsor" maxlength="150" placeholder="Description & results (max. 150 words)"></textarea>
+          </div>
+
+          <div class="award">
+            <div class="award-top">
+              <input id="tech" type="checkbox" name="award" value="Best Use of Technology">
+              <label for="tech">Best Use of Technology</label>
+            </div>
+            <textarea name="description_tech" maxlength="150" placeholder="Description & results (max. 150 words)"></textarea>
+          </div>
+
+          <div class="award">
+            <div class="award-top">
+              <input id="online" type="checkbox" name="award" value="Best Online Campaign">
+              <label for="online">Best Online Campaign</label>
+            </div>
+            <textarea name="description_online" maxlength="150" placeholder="Description & results (max. 150 words)"></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" id="submitBtn">Submit Application</button>
+          <span class="note">Your information is handled confidentially.</span>
+        </div>
+
+        <div class="success" id="successMessage">
+          ✓ Submission successful. Your application has been recorded locally for this demo.
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("submissionForm");
+    const success = document.getElementById("successMessage");
+
+    document.querySelectorAll('.award input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.addEventListener("change", () => {
+        checkbox.closest(".award").classList.toggle("selected", checkbox.checked);
+      });
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const selected = [...document.querySelectorAll('input[name="award"]:checked')];
+
+      if (selected.length === 0) {
+        alert("Please select at least one award category.");
+        return;
+      }
+
+      success.classList.add("show");
+      form.reset();
+      document.querySelectorAll(".award").forEach(card => card.classList.remove("selected"));
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
